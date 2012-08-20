@@ -1,0 +1,70 @@
+<html>
+<head>
+	<title>Sarah Background</title>
+</head>
+<body>
+	<script type="text/javascript">
+var config = {
+	name: 'codetank',
+	enable: true,
+	base: 'http://codetank2.alloyteam.com',
+	rules: {
+	'r1': {
+		source: '/index.html',
+		target: '/index.html',
+		type: 'regexp',// exact, text
+		enable: true
+	}
+	}
+}
+
+var configs = {
+	'c1': config
+}
+
+var getRedirectUrl = function(src, config){
+	var rules = config.rules, rurl, rule, matchRule;
+	for(var r in rules){
+		rule = rules[r];
+		if(!rule.enable){
+			continue;
+		}
+		if(rule.type === 'regexp'){
+			rule.regexp = rule.regexp || (new RegExp(rule.source, 'i'));
+			if(rule.regexp.test(src)){
+				matchRule = rule;
+				break;
+			}
+		}else{
+			if(src.indexOf(rule.source) >= 0){
+				matchRule = rule;
+				break;
+			}
+		}
+	}
+	if(matchRule){
+		rurl = matchRule.target.indexOf('http') >= 0 ? 
+			matchRule.target : (config.base + matchRule.target);
+		return rurl;
+	}
+	return null;
+}
+
+var onBeforeRequest = function(details) {
+	var url = details.url, rurl;
+	var configs = localStorage.requestConfigs || {};
+	for(var c in configs){
+		if(configs[c].enable && (rurl = getRedirectUrl(url, configs[c]))){
+			break;
+		}
+	}
+	if(rurl){
+		return {redirectUrl: rurl};
+	}
+	return true;
+};
+
+chrome.webRequest.onBeforeRequest.addListener(onBeforeRequest, {urls:["<all_urls>"]}, ["blocking"]);
+	</script>
+</body>
+</html>

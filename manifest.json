@@ -1,0 +1,12 @@
+{
+    "name": "sarah",
+    "version": "0.1",
+    "background_page": "background.html",
+    "description": "chrome fiddler",
+    "permissions": [
+        "tabs",
+        "*://*/*",
+        "webRequestBlocking",
+        "webRequest"
+     ]
+ }
