@@ -2,3 +2,6 @@
 .toolbar{
 	text-align: right;
 }
+.config ul{
+	list-style: none;
+}
