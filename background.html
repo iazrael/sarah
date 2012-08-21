@@ -52,13 +52,14 @@ var getRedirectUrl = function(src, config){
 
 var onBeforeRequest = function(details) {
 	var url = details.url, rurl;
-	var configs = localStorage.requestConfigs || {};
+	// var configs = localStorage.requestConfigs || {};
 	for(var c in configs){
 		if(configs[c].enable && (rurl = getRedirectUrl(url, configs[c]))){
 			break;
 		}
 	}
 	if(rurl){
+		console.log('redirect: from: ' + url + ', to: ' + rurl);
 		return {redirectUrl: rurl};
 	}
 	return true;
