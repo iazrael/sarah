@@ -4,29 +4,13 @@
 </head>
 <body>
 	<script type="text/javascript">
-var config = {
-	name: 'codetank',
-	enable: true,
-	base: 'http://codetank2.alloyteam.com',
-	rules: {
-	'r1': {
-		source: '/index.html',
-		target: '/index.html',
-		type: 'regexp',// exact, text
-		enable: true
-	}
-	}
-}
-
-var configs = {
-	'c1': config
-}
-
 var getRedirectUrl = function(src, config){
-	var rules = config.rules, rurl, rule, matchRule;
+	var rules = config.rules, 
+		base = config.base || '',
+		rurl, rule, matchRule;
 	for(var r in rules){
 		rule = rules[r];
-		if(!rule.enable){
+		if(rule.disable){
 			continue;
 		}
 		if(rule.type === 'regexp'){
@@ -44,7 +28,7 @@ var getRedirectUrl = function(src, config){
 	}
 	if(matchRule){
 		rurl = matchRule.target.indexOf('http') >= 0 ? 
-			matchRule.target : (config.base + matchRule.target);
+			matchRule.target : (base + matchRule.target);
 		return rurl;
 	}
 	return null;
@@ -52,9 +36,10 @@ var getRedirectUrl = function(src, config){
 
 var onBeforeRequest = function(details) {
 	var url = details.url, rurl;
-	// var configs = localStorage.requestConfigs || {};
+	var configs = localStorage.requestConfigs || '[]';
+	configs = JSON.parse(configs);
 	for(var c in configs){
-		if(configs[c].enable && (rurl = getRedirectUrl(url, configs[c]))){
+		if(!configs[c].disable && (rurl = getRedirectUrl(url, configs[c]))){
 			break;
 		}
 	}

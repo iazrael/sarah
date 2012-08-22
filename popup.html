@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta http-equiv="content-type" content="text/html; charset=utf-8" />
+	<title>Sarah Setting</title>
+	<link rel="stylesheet" type="text/css" href="style/bootstrap.min.css">
+	<link rel="stylesheet" type="text/css" href="style/style.css">
+</head>
+<body>
+	<div class="container">
+		<textarea id="configList" class="config-code">/** this is an example, write your config after this comment.
+[{
+	"name": "alloyteam", //git it a name
+	"disable": false, //disable or not, default false
+	"base": "http://www.alloyteam.com", // the base url for target, deault ""
+	"rules": 
+	[{
+		"source": "/404.html", //redirect all 404.html(any website) to /index.html
+		"type": "regexp",// text or regexp
+		"target": "/index.html", //target url, relative to "base"
+		"disable": false //disable or not, default false
+	}]
+}] **/
+[{
+	/** I\'m waiting for you! **/
+}]</textarea>
+	</div>
+
+<script type="text/javascript">
+	var $configList = document.getElementById('configList');
+	$configList.addEventListener('blur', function(e) {
+		var text = this.value;
+		text = text.replace(/\/\*[\s\S]*?\*\//g, '');
+		try{
+			localStorage.requestConfigs = JSON.stringify(JSON.parse(text));
+		}catch(e){
+			console.log('the code is not correct, chekc it!');
+		}
+	});
+	if(localStorage.requestConfigs){
+		$configList.value = localStorage.requestConfigs;
+	}
+</script>
+</body>
+</html>

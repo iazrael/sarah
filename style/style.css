@@ -1,7 +1,8 @@
-
-.toolbar{
-	text-align: right;
+.container{
+	width: 530px;
 }
-.config ul{
-	list-style: none;
+.config-code{
+	width: 500px;
+	height: 320px;
+	margin: 10px;
 }

@@ -1,8 +1,11 @@
 {
     "name": "sarah",
     "version": "0.1",
-    // "manifest_version": 2,
-    "options_page": "options.html",
+    "browser_action": {
+        "default_icon": "style/image/icon19.png",
+        "default_title": "Sarah Setting",
+        "default_popup": "popup.html"
+    },
     "background_page": "background.html",
     "description": "chrome fiddler",
     "permissions": [
