@@ -14,12 +14,14 @@
 	"disable": false, //disable or not, default false
 	"base": "http://www.alloyteam.com", // the base url for target, deault ""
 	"rules": 
-	[{
+	[
+	{
 		"source": "/404.html", //redirect all 404.html(any website) to /index.html
-		"type": "regexp",// text or regexp
+		"type": "text",// text or regexp
 		"target": "/index.html", //target url, relative to "base"
 		"disable": false //disable or not, default false
-	}]
+	}
+	]
 }] **/
 [{
 	/** I\'m waiting for you! **/
@@ -32,11 +34,25 @@
 		var text = this.value;
 		text = text.replace(/\/\*[\s\S]*?\*\//g, '');
 		try{
-			localStorage.requestConfigs = JSON.stringify(JSON.parse(text));
+			JSON.parse(text);
+			localStorage.requestConfigs = text;
 		}catch(e){
 			console.log('the code is not correct, chekc it!');
 		}
 	});
+	$configList.addEventListener('keydown', function(e){
+	    if(e.keyCode == 9){
+	        e.preventDefault();
+	        var start = this.selectionStart, end = this.selectionEnd;
+	        var text = this.value;
+	        var tab = '    ';
+	        text = text.substr(0, start) + tab + text.substr(start);
+	        this.value = text;
+	        this.selectionStart = start + tab.length;
+	        this.selectionEnd = end + tab.length;
+	    }
+	})
+
 	if(localStorage.requestConfigs){
 		$configList.value = localStorage.requestConfigs;
 	}
